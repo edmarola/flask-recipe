@@ -1,5 +1,5 @@
 from flask import Flask, jsonify, abort, make_response, session
-from flaskr.schemas import LoginRequestSchema
+from flaskr.schemas import LoginRequestSchema, UserSchema
 from webargs.flaskparser import use_args
 from flaskr.models import User
 from flaskr.db import session as db_session
@@ -11,7 +11,7 @@ app.config.from_mapping(
     SECRET_KEY=os.environ.get('SECRET_KEY', 'my-secret-key')
 )
 
-@app.route('/api/login', methods=['POST'])
+@app.route('/auth/login', methods=['POST'])
 @use_args(LoginRequestSchema())
 def login(args):
     user = db_session.query(User).filter(User.username==args['username']).first()
@@ -20,11 +20,11 @@ def login(args):
     else:
         if bcrypt.checkpw(args['password'].encode('utf-8'), user.password.encode('utf-8')):
             session['username'] = args['username']
-            return '', 204
+            return UserSchema().dump(user), 200
         else:
             abort(make_response(jsonify(error='Invalid Credentials'), 401))
 
-@app.route('/api/logout', methods=['DELETE'])
+@app.route('/auth/logout', methods=['DELETE'])
 def logout():
     session.pop('username')
     session.clear()

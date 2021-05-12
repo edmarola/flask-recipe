@@ -7,3 +7,7 @@ class LoginRequestSchema(Schema):
     password = fields.Str(required=True)
 
 
+class UserSchema(Schema):
+    id = fields.Int()
+    fullname = fields.Str()
+    username = fields.Str()
