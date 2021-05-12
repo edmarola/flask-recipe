@@ -11,11 +11,20 @@ components:
       in: cookie
       name: session  # cookie name
       
+  parameters:
+    sessionCookie:
+      name: session
+      in: cookie
+      description: The authentication cookie
+      required: true
+      schema:
+        type: string
+        example: abcde123456
+  
+  
   schemas:
     User:
       type: object
-      required:
-        - username
       properties:
         id:
           type: integer
@@ -33,7 +42,7 @@ components:
       content:
         application/json:
           schema:
-            type: object 
+            type: object
             properties:
               errors:
                 type: object
@@ -46,6 +55,16 @@ components:
                         items:
                           type: string
                           example: Error message
+    401Error:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:           
+              error:
+                type: string
+                example: Invalid credentials | Unauthorized
                       
 
 security:
@@ -89,17 +108,29 @@ paths:
                 type: string
                 example: session=abcde12345; Path=/; HttpOnly
         '401':
-          description: Invalid credentials
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:           
-                  error:
-                    type: string
-                    example: Invalid credentials
+          $ref: '#/components/responses/401Error'
+          
         '422':
           $ref: '#/components/responses/422Error'
       tags:
         - Authentication
+  
+  /auth/logout:
+    delete:
+      parameters:
+        - $ref: '#/components/parameters/sessionCookie'
+      description: Given a valid session cookie, the session cookie is removed and the user is logged out.
+      responses:
+        '204':
+          description: >
+            Successfully logged out.
+          headers:
+            Set-Cookie:
+              schema: 
+                type: string
+                example: session=; Path=/
+        '401':
+          $ref: '#/components/responses/401Error'
+      tags:
+        - Authentication  
           

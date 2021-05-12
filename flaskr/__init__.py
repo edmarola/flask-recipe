@@ -28,7 +28,7 @@ def login(args):
 def logout():
     session.pop('username')
     session.clear()
-    return '', 200
+    return '', 204
 
 # Return validation errors as JSON
 @app.errorhandler(422)

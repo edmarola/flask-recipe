@@ -9,7 +9,7 @@ The purpose is create 6 services: Login, Logout, a CRUD + Tests and api document
 3. Install dependencies: `pip3 install -r requirements.txt`.
 4. Install project in editable mode: `pip3 install -e .`.
 5. Set the `.env` values.
-6. I didnt used alembic in this stage so to create the tables and seed the data we will just do the following:
+6. I didn't use alembic in this stage so to create the tables and seed the data we will just do the following:
 ```
 $ python3
 >>> from flaskr.db import engine
@@ -21,3 +21,6 @@ $ python3
 
 ## Run dev server:
 - Run the `flask run` command.
+
+## Openapi spec
+If you want to visualize the openapi spec, you can use the [swagger online editor](https://editor.swagger.io/). Just copy the content of `/openapi/spec.yaml` and place the content in that editor or in any other visualization tool.
