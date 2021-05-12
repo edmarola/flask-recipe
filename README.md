@@ -1,4 +1,4 @@
-# Flask backend test solution by Eduardo Rodríguez
+# Flask recipe by Eduardo Rodríguez
 
 The purpose is create 6 services: Login, Logout, a CRUD + Tests and api documentation like swagger.
 
